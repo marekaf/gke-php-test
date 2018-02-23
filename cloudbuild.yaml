@@ -7,7 +7,7 @@ steps:
   args: ['apply', '-f', 'nginx.yaml','--namespace=$REPO_NAME-$BRANCH_NAME']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=production'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
 - id: kubectl-set-image 
   name: 'gcr.io/cloud-builders/kubectl'
   args:
@@ -19,7 +19,7 @@ steps:
   - --namespace=$REPO_NAME-$BRANCH_NAME
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=production'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
   waitFor:
     - kubectl-apply
     - docker-build
