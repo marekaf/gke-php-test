@@ -7,7 +7,12 @@ steps:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
   - 'CLOUDSDK_CONTAINER_CLUSTER=production'
 - name: 'gcr.io/cloud-builders/kubectl'
-  args: ['run', '$REPO_NAME', '--image=eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID','--namespace=$REPO_NAME-$BRANCH_NAME','--port=80', '--replicas=2']
+  args:
+  - set
+  - image
+  - deployment
+  - nginx
+  - nginx=eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
   - 'CLOUDSDK_CONTAINER_CLUSTER=production'
