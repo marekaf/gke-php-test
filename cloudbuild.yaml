@@ -4,7 +4,7 @@ steps:
   args: ['build', '-t', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID', '.']
 - id: kubectl-apply
   name: 'gcr.io/cloud-builders/kubectl'
-  args: ['apply', '-f', 'nginx.yaml','--namespace=$REPO_NAME-$BRANCH_NAME']
+  args: ['apply', '-f', 'nginx.yaml']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
   - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
@@ -16,7 +16,6 @@ steps:
   - deployment
   - nginx
   - nginx=eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID
-  - --namespace=$REPO_NAME-$BRANCH_NAME
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
   - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
