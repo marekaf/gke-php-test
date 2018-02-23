@@ -1,12 +1,15 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
+- id: docker-build
+  name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID', '.']
-- name: 'gcr.io/cloud-builders/kubectl'
+- id: kubectl-apply
+  name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', 'nginx.yaml','--namespace=$REPO_NAME-$BRANCH_NAME']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
   - 'CLOUDSDK_CONTAINER_CLUSTER=production'
-- name: 'gcr.io/cloud-builders/kubectl'
+- id: kubectl-set-image 
+  name: 'gcr.io/cloud-builders/kubectl'
   args:
   - set
   - image
@@ -17,4 +20,7 @@ steps:
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
   - 'CLOUDSDK_CONTAINER_CLUSTER=production'
+  waitFor:
+    - kubectl-apply
+    - docker-build
 images: ['eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID']
