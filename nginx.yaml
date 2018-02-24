@@ -19,7 +19,21 @@ spec:
         image: NGINX_IMAGE_NAME
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            memory: "16Mi"
+            cpu: "1m"
+          limits:
+            memory: "128Mi"
+            cpu: "5m"
       - name: php
         image: PHP_IMAGE_NAME
         ports:
         - containerPort: 9000
+        resources:
+          requests:
+            memory: "16Mi"
+            cpu: "1m"
+          limits:
+            memory: "128Mi"
+            cpu: "20m"
