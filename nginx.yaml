@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: nginx
-  replicas: 3
+  replicas: 2
   template: # create pods using pod definition in this template
     metadata:
       # unlike pod-nginx.yaml, the name is not included in the meta data as a unique name is
