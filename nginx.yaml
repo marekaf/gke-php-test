@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: nginx
-  replicas: 4 # tells deployment to run 2 pods matching the template
+  replicas: 2 # tells deployment to run 2 pods matching the template
   template: # create pods using pod definition in this template
     metadata:
       # unlike pod-nginx.yaml, the name is not included in the meta data as a unique name is
@@ -19,11 +19,17 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 80
+      - name: php
+        image: php:7.1
+        ports:
+        - containerPort: 9000
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name: nginx
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: gke-test.marekbartik.com
 spec:
   selector:
     app: nginx
@@ -31,4 +37,4 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 80
-  type: NodePort
+  type: LoadBalancer

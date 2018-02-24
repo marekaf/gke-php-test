@@ -1,3 +1,4 @@
 FROM nginx
-COPY index.html /usr/share/nginx/html/index.html
+COPY site.conf /etc/nginx/conf.d/site.conf
+COPY index.php /code/
 
