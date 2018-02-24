@@ -2,24 +2,31 @@ steps:
 - id: docker-build
   name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID', '.']
+- id: docker-build
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['build','-f','Dockerfile-php', '-t', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:php-$BUILD_ID', '.']
+- id: docker-build
+  args ['bash','-c','sed -i "s/NGINX_IMAGE_NAME/eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID/" *.yaml']
+- id: docker-build
+  args ['bash','-c','sed -i "s/PHP_IMAGE_NAME/eu.gcr.io/$PROJECT_ID/$REPO_NAME/php-$BRANCH_NAME:$BUILD_ID/" *.yaml']
 - id: kubectl-apply
   name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', 'nginx.yaml']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
   - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
-- id: kubectl-set-image 
-  name: 'gcr.io/cloud-builders/kubectl'
-  args:
-  - set
-  - image
-  - deployment
-  - nginx
-  - nginx=eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
-  waitFor:
-    - kubectl-apply
-    - docker-build
-images: ['eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID']
+#- id: kubectl-set-image 
+#  name: 'gcr.io/cloud-builders/kubectl'
+#  args:
+#  - set
+#  - image
+#  - deployment
+#  - nginx
+#  - nginx=eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID
+#  env:
+#  - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
+#  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
+#  waitFor:
+#    - kubectl-apply
+#    - docker-build
+images: ['eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:php-$BUILD_ID']
