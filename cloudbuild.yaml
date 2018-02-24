@@ -1,12 +1,21 @@
 steps:
-- id: docker-build
+- id: 'build nginx image'
   name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID', '.']
-- name: 'gcr.io/cloud-builders/docker'
+- id: 'build php image'
+  name: 'gcr.io/cloud-builders/docker'
   args: ['build','-f','Dockerfile-php', '-t', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:php-$BUILD_ID', '.']
-- name: 'ubuntu'
+- id: 'push nginx image'
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID']
+- id: 'push php image'
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:php-$BUILD_ID']
+- id: 'set nginx image in yamls'
+  name: 'ubuntu'
   args: ['bash','-c','sed -i "s,NGINX_IMAGE_NAME,eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID," *.yaml']
-- name: 'ubuntu'
+- id: 'set php image in yamls'
+  name: 'ubuntu'
   args: ['bash','-c','sed -i "s,PHP_IMAGE_NAME,eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:php-$BUILD_ID," *.yaml']
 - id: kubectl-apply
   name: 'gcr.io/cloud-builders/kubectl'
@@ -14,18 +23,4 @@ steps:
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
   - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
-#- id: kubectl-set-image 
-#  name: 'gcr.io/cloud-builders/kubectl'
-#  args:
-#  - set
-#  - image
-#  - deployment
-#  - nginx
-#  - nginx=eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID
-#  env:
-#  - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
-#  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
-#  waitFor:
-#    - kubectl-apply
-#    - docker-build
 images: ['eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$BUILD_ID', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:php-$BUILD_ID']
