@@ -20,6 +20,6 @@ spec:
         ports:
         - containerPort: 80
       - name: php
-        image: php:7.1
+        image: php:fpm-7.1
         ports:
         - containerPort: 9000
