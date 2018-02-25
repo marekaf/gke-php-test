@@ -34,7 +34,7 @@ metadata:
   name: external-dns
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: ClusterRole # you might need this https://coreos.com/operators/prometheus/docs/latest/troubleshooting.html
 metadata:
   labels:
     app: external-dns
