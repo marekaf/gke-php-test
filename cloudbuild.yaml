@@ -23,4 +23,10 @@ steps:
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
   - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
+- id: kubectl-apply-ingress
+  name: 'gcr.io/cloud-builders/kubectl'
+  args: ['apply', '-f', 'ingress.yaml']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'  
 images: ['eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$SHORT_SHA', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:php-$SHORT_SHA']
