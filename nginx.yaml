@@ -37,3 +37,18 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "20m"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: gke-test.marekbartik.com
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+-  type: LoadBalancer
