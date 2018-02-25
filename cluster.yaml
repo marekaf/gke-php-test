@@ -1,0 +1,12 @@
+imports:
+- path: gke-cluster.jinja
+
+resources:
+- name: test-cluster
+  type: gke-cluster.jinja
+  properties:
+    zone: europe-west1-d
+    pools:
+     - name: default-pool
+       nodeCount: 3
+       machineType: "n1-standard-1"

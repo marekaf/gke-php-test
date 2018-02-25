@@ -42,8 +42,6 @@ kind: Service
 apiVersion: v1
 metadata:
   name: nginx
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: gke-test.marekbartik.com
 spec:
   selector:
     app: nginx
