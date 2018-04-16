@@ -21,8 +21,8 @@ steps:
   name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', 'nginx.yaml']
   env:
-  - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-d'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=test-cluster'
+  - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-b'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=test'
 - id: kubectl-apply-ingress
   name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', 'ingress.yaml']
