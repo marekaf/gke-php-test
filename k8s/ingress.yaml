@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: gke-test.marekbartik.com
+spec:
+  rules:
+  - host: gke-test.marekbartik.com
+    http:
+      paths:
+      - backend:
+          serviceName: nginx
+          servicePort: 80

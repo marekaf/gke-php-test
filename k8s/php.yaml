@@ -1,0 +1,41 @@
+apiVersion: apps/v1beta2 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: php
+spec:
+  selector:
+    matchLabels:
+      app: php
+  replicas: 5
+  template: # create pods using pod definition in this template
+    metadata:
+      # unlike pod-nginx.yaml, the name is not included in the meta data as a unique name is
+      # generated from the deployment name
+      labels:
+        app: php
+    spec:
+      containers:
+      - name: php
+        image: PHP_IMAGE_NAME
+        ports:
+        - containerPort: 9000
+        resources:
+          requests:
+            memory: "16Mi"
+            cpu: "1m"
+          limits:
+            memory: "128Mi"
+            cpu: "20m"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: php
+spec:
+  selector:
+    app: php
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 9000
+    targetPort: 9000
