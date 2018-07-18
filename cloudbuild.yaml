@@ -1,3 +1,6 @@
+substitutions:
+    _CLOUDSDK_COMPUTE_ZONE: europe-west1-b # default value
+    _CLOUDSDK_CONTAINER_CLUSTER: test      # default value
 steps:
 - id: 'build nginx image'
   name: 'gcr.io/cloud-builders/docker'
@@ -21,6 +24,6 @@ steps:
   name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', 'k8s/']
   env:
-  - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-b'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=test'
+  - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
 images: ['eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:$SHORT_SHA', 'eu.gcr.io/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME:php-$SHORT_SHA']
